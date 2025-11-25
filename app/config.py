@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     allow_methods: list[str] = ["*"]
     allow_headers: list[str] = ["*"]
 
+    api_key: str = ""
+
     model_config = SettingsConfigDict(env_file=".env")
 
     def __hash__(self) -> int:

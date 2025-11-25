@@ -4,7 +4,7 @@ from sentence_transformers import SentenceTransformer
 from typing import Annotated
 import numpy as np
 
-from app.dependencies import get_embedding_model
+from app.dependencies import get_embedding_model, get_api_key
 from app.schemas import Document, DocumentWithEmbedding
 
 router = APIRouter(tags=["embeddings"])
@@ -14,6 +14,7 @@ router = APIRouter(tags=["embeddings"])
 async def create_embedding(
     document: Document,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
+    _api_key: Annotated[str, Depends(get_api_key)],
 ):
     embedding: NDArray[np.floating] = model.encode_document(  # type: ignore
         sentences=document.content,
@@ -31,6 +32,7 @@ async def create_embedding(
 async def create_embeddings(
     documents: list[Document],
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
+    _api_key: Annotated[str, Depends(get_api_key)],
 ):
     sentences = list(doc.content for doc in documents)
     embeddings: NDArray[np.floating] = model.encode_document(  # type: ignore
