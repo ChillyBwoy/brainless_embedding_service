@@ -7,8 +7,7 @@ class Settings(BaseSettings):
 
     openapi_url: str | None = None
     hf_token: str = ""
-    embedding_model_name: str = ""
-    prediction_model_name: str = ""
+    model_name: str = ""
     cache_folder: str = ""
 
     allow_credentials: bool = True
@@ -25,8 +24,7 @@ class Settings(BaseSettings):
                 self.port,
                 self.openapi_url,
                 self.hf_token,
-                self.embedding_model_name,
-                self.prediction_model_name,
+                self.model_name,
                 self.cache_folder,
                 self.allow_credentials,
                 "|".join(self.allow_origins),

@@ -36,7 +36,7 @@ lint:
 
 .PHONY: openapi
 openapi:
-	uv run python -m actions.extract_openapi --app main:app --app-dir ./ --out ./openapi.json
+	uv run python -m actions.openapi --app app.main:app --app-dir ./ --out ./openapi.json
 
 .PHONY: preload
 preload:

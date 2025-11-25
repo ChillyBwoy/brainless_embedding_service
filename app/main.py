@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.dependencies import get_settings
 from app.routers.embeddings import router as embeddings_router
-from app.routers.predictions import router as predictions_router
 
 settings = get_settings()
 
@@ -22,4 +21,3 @@ app.add_middleware(
 )
 
 app.include_router(embeddings_router, prefix="/api/embeddings")
-app.include_router(predictions_router, prefix="/api/predictions")
