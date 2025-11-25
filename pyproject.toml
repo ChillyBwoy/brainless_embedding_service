@@ -6,6 +6,7 @@ authors = [{ name = "Eugene Cheltsov", email = "chill.icp@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "accelerate>=1.12.0",
     "fastapi[all]>=0.121.3",
     "pydantic-settings>=2.12.0",
     "sentence-transformers>=5.1.2",

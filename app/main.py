@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routes.embeddings import router as embeddings_router
-from routes.predictions import router as predictions_router
-from core.config import get_settings
+from app.dependencies import get_settings
+from app.routers.embeddings import router as embeddings_router
+from app.routers.predictions import router as predictions_router
 
 settings = get_settings()
 
