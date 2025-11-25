@@ -7,9 +7,8 @@ class Document(BaseModel):
     meta: dict[str, Any]
 
 
-class Embedding(BaseModel):
-    content: list[float]
-    meta: dict[str, Any]
+class DocumentWithEmbedding(Document):
+    embedding: list[float]
 
 
 class Prompt(BaseModel):

@@ -5,12 +5,12 @@ from typing import Annotated
 import numpy as np
 
 from app.dependencies import get_embedding_model
-from app.schemas import Document, Embedding
+from app.schemas import Document, DocumentWithEmbedding
 
 router = APIRouter(tags=["embeddings"])
 
 
-@router.post("/one", response_model=Embedding)
+@router.post("/one", response_model=DocumentWithEmbedding)
 async def create_embedding(
     document: Document,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
@@ -20,10 +20,14 @@ async def create_embedding(
         convert_to_numpy=True,
     )
 
-    return Embedding(content=embedding.tolist(), meta=document.meta)
+    return DocumentWithEmbedding(
+        content=document.content,
+        meta=document.meta,
+        embedding=embedding.tolist(),
+    )
 
 
-@router.post("/many", response_model=list[Embedding])
+@router.post("/many", response_model=list[DocumentWithEmbedding])
 async def create_embeddings(
     documents: list[Document],
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
@@ -36,5 +40,10 @@ async def create_embeddings(
     )
 
     return list(
-        Embedding(content=emb, meta=doc.meta) for emb, doc in zip(embeddings, documents)
+        DocumentWithEmbedding(
+            content=doc.content,
+            meta=doc.meta,
+            embedding=emb,
+        )
+        for emb, doc in zip(embeddings, documents)
     )
