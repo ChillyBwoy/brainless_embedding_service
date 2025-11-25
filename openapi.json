@@ -28,7 +28,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Embedding"
+                  "$ref": "#/components/schemas/DocumentWithEmbedding"
                 }
               }
             }
@@ -43,7 +43,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
       }
     },
     "/api/embeddings/many": {
@@ -74,7 +79,7 @@
               "application/json": {
                 "schema": {
                   "items": {
-                    "$ref": "#/components/schemas/Embedding"
+                    "$ref": "#/components/schemas/DocumentWithEmbedding"
                   },
                   "type": "array",
                   "title": "Response Create Embeddings Api Embeddings Many Post"
@@ -92,7 +97,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
       }
     }
   },
@@ -117,27 +127,32 @@
         ],
         "title": "Document"
       },
-      "Embedding": {
+      "DocumentWithEmbedding": {
         "properties": {
           "content": {
-            "items": {
-              "type": "number"
-            },
-            "type": "array",
+            "type": "string",
             "title": "Content"
           },
           "meta": {
             "additionalProperties": true,
             "type": "object",
             "title": "Meta"
+          },
+          "embedding": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Embedding"
           }
         },
         "type": "object",
         "required": [
           "content",
-          "meta"
+          "meta",
+          "embedding"
         ],
-        "title": "Embedding"
+        "title": "DocumentWithEmbedding"
       },
       "HTTPValidationError": {
         "properties": {
@@ -184,6 +199,13 @@
           "type"
         ],
         "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "APIKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
       }
     }
   }
