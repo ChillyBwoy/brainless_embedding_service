@@ -3,11 +3,12 @@ from pydantic import BaseModel
 
 
 class Document(BaseModel):
-    content: str
     meta: dict[str, Any]
+    content: str
 
 
-class DocumentWithEmbedding(Document):
+class Embedding(BaseModel):
+    meta: dict[str, Any]
     embedding: list[float]
 
 

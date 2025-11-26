@@ -19,6 +19,7 @@ def _get_embedding_model(settings: Settings) -> SentenceTransformer:
         settings.model_name,
         cache_folder=settings.cache_folder,
         token=settings.hf_token,
+        truncate_dim=768,
     )
 
 
