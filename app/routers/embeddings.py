@@ -5,39 +5,46 @@ from typing import Annotated
 import numpy as np
 
 from app.dependencies import get_embedding_model, get_api_key
-from app.schemas import Document, Embedding
+from app.schemas import Embedding, CreateEmbedding, CreateEmbeddingList
 
 router = APIRouter(tags=["embeddings"])
 
 
-@router.post("/one", response_model=Embedding)
-async def create_embedding(
-    document: Document,
+@router.post(
+    "/one",
+    response_model=Embedding,
+    dependencies=[Depends(get_api_key)],
+)
+async def create_one(
+    input: CreateEmbedding,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
-    _api_key: Annotated[str, Depends(get_api_key)],
 ):
     embedding: NDArray[np.floating] = model.encode_document(  # type: ignore
-        sentences=document.content,
+        sentences=input.document.content,
         convert_to_numpy=True,
+        truncate_dim=input.dimensions,
     )
 
     return Embedding(
-        meta=document.meta,
+        meta=input.document.meta,
         embedding=embedding.tolist(),
     )
 
 
-@router.post("/many", response_model=list[Embedding])
-async def create_embeddings(
-    documents: list[Document],
+@router.post(
+    "/many",
+    response_model=list[Embedding],
+    dependencies=[Depends(get_api_key)],
+)
+async def create_many(
+    input: CreateEmbeddingList,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
-    _api_key: Annotated[str, Depends(get_api_key)],
 ):
-    sentences = list(doc.content for doc in documents)
+    sentences = list(doc.content for doc in input.documents)
     embeddings: NDArray[np.floating] = model.encode_document(  # type: ignore
         sentences=sentences,
-        batch_size=100,
         convert_to_numpy=True,
+        truncate_dim=input.dimensions,
     )
 
     return list(
@@ -45,5 +52,5 @@ async def create_embeddings(
             meta=doc.meta,
             embedding=emb,
         )
-        for emb, doc in zip(embeddings, documents)
+        for emb, doc in zip(embeddings, input.documents)
     )

@@ -1,21 +1,48 @@
-from typing import Any
-from pydantic import BaseModel
+from typing import Any, Annotated
+from pydantic import BaseModel, BeforeValidator
+
+SUPPORTED_DIMENSIONS = [128, 256, 512, 768, 1024]
+
+
+def validate_dimension(dimensions: int) -> int:
+    if dimensions not in SUPPORTED_DIMENSIONS:
+        raise ValueError(
+            f"Invalid dimension. Supported dimensions are: {SUPPORTED_DIMENSIONS}"
+        )
+    return dimensions
 
 
 class Document(BaseModel):
+    """
+    Base input data
+    """
+
     meta: dict[str, Any]
     content: str
 
 
 class Embedding(BaseModel):
+    """
+    Output data
+    """
+
     meta: dict[str, Any]
     embedding: list[float]
 
 
-class Prompt(BaseModel):
-    content: str
+class CreateEmbedding(BaseModel):
+    """
+    Single embed payload
+    """
+
+    document: Document
+    dimensions: Annotated[int, BeforeValidator(validate_dimension)]
 
 
-class Message(BaseModel):
-    content: str
-    thinking: str
+class CreateEmbeddingList(BaseModel):
+    """
+    Multiple embed payload
+    """
+
+    documents: list[Document]
+    dimensions: Annotated[int, BeforeValidator(validate_dimension)]
