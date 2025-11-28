@@ -17,6 +17,7 @@ class Document(BaseModel):
     Base input data
     """
 
+    id: str | int
     meta: dict[str, Any]
     content: str
 
@@ -26,6 +27,7 @@ class Embedding(BaseModel):
     Output data
     """
 
+    id: str | int
     meta: dict[str, Any]
     embedding: list[float]
 
@@ -35,7 +37,7 @@ class CreateEmbedding(BaseModel):
     Single embed payload
     """
 
-    document: Document
+    content: str
     dimensions: Annotated[int, BeforeValidator(validate_dimension)]
 
 

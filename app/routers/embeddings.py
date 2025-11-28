@@ -11,8 +11,8 @@ router = APIRouter(tags=["embeddings"])
 
 
 @router.post(
-    "/one",
-    response_model=Embedding,
+    "/",
+    response_model=list[float],
     dependencies=[Depends(get_api_key)],
 )
 async def create_one(
@@ -20,19 +20,16 @@ async def create_one(
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
 ):
     embedding: NDArray[np.floating] = model.encode_document(  # type: ignore
-        sentences=input.document.content,
+        sentences=input.content,
         convert_to_numpy=True,
         truncate_dim=input.dimensions,
     )
 
-    return Embedding(
-        meta=input.document.meta,
-        embedding=embedding.tolist(),
-    )
+    return embedding.tolist()
 
 
 @router.post(
-    "/many",
+    "/bulk",
     response_model=list[Embedding],
     dependencies=[Depends(get_api_key)],
 )
@@ -48,9 +45,6 @@ async def create_many(
     )
 
     return list(
-        Embedding(
-            meta=doc.meta,
-            embedding=emb,
-        )
+        Embedding(id=doc.id, meta=doc.meta, embedding=emb)
         for emb, doc in zip(embeddings, input.documents)
     )

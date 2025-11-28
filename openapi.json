@@ -5,18 +5,18 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/api/embeddings/one": {
+    "/api/embeddings/": {
       "post": {
         "tags": [
           "embeddings"
         ],
-        "summary": "Create Embedding",
-        "operationId": "create_embedding_api_embeddings_one_post",
+        "summary": "Create One",
+        "operationId": "create_one_api_embeddings__post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Document"
+                "$ref": "#/components/schemas/CreateEmbedding"
               }
             }
           },
@@ -28,7 +28,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Embedding"
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array",
+                  "title": "Response Create One Api Embeddings  Post"
                 }
               }
             }
@@ -51,22 +55,18 @@
         ]
       }
     },
-    "/api/embeddings/many": {
+    "/api/embeddings/bulk": {
       "post": {
         "tags": [
           "embeddings"
         ],
-        "summary": "Create Embeddings",
-        "operationId": "create_embeddings_api_embeddings_many_post",
+        "summary": "Create Many",
+        "operationId": "create_many_api_embeddings_bulk_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "items": {
-                  "$ref": "#/components/schemas/Document"
-                },
-                "type": "array",
-                "title": "Documents"
+                "$ref": "#/components/schemas/CreateEmbeddingList"
               }
             }
           },
@@ -82,7 +82,7 @@
                     "$ref": "#/components/schemas/Embedding"
                   },
                   "type": "array",
-                  "title": "Response Create Embeddings Api Embeddings Many Post"
+                  "title": "Response Create Many Api Embeddings Bulk Post"
                 }
               }
             }
@@ -108,8 +108,60 @@
   },
   "components": {
     "schemas": {
+      "CreateEmbedding": {
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "dimensions": {
+            "type": "integer",
+            "title": "Dimensions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "content",
+          "dimensions"
+        ],
+        "title": "CreateEmbedding",
+        "description": "Single embed payload"
+      },
+      "CreateEmbeddingList": {
+        "properties": {
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "dimensions": {
+            "type": "integer",
+            "title": "Dimensions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "documents",
+          "dimensions"
+        ],
+        "title": "CreateEmbeddingList",
+        "description": "Multiple embed payload"
+      },
       "Document": {
         "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
           "meta": {
             "additionalProperties": true,
             "type": "object",
@@ -122,13 +174,26 @@
         },
         "type": "object",
         "required": [
+          "id",
           "meta",
           "content"
         ],
-        "title": "Document"
+        "title": "Document",
+        "description": "Base input data"
       },
       "Embedding": {
         "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              }
+            ],
+            "title": "Id"
+          },
           "meta": {
             "additionalProperties": true,
             "type": "object",
@@ -144,10 +209,12 @@
         },
         "type": "object",
         "required": [
+          "id",
           "meta",
           "embedding"
         ],
-        "title": "Embedding"
+        "title": "Embedding",
+        "description": "Output data"
       },
       "HTTPValidationError": {
         "properties": {
