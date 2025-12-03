@@ -1,0 +1,11 @@
+.models
+.mypy_cache
+.ruff_cache
+.venv
+.vscode
+
+.DS_Store
+
+*.pyc
+
+__pycache__

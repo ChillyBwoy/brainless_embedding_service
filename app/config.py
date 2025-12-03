@@ -3,7 +3,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     debug: bool = False
-    port: int = 8080
 
     openapi_url: str | None = None
     hf_token: str = ""
@@ -17,13 +16,12 @@ class Settings(BaseSettings):
 
     api_key: str = ""
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     def __hash__(self) -> int:
         return hash(
             (
                 self.debug,
-                self.port,
                 self.openapi_url,
                 self.hf_token,
                 self.model_name,
