@@ -5,7 +5,7 @@ from typing import Annotated
 import numpy as np
 
 from app.dependencies import get_embedding_model, get_api_key
-from app.schemas import Embedding, CreateEmbedding, CreateEmbeddingList
+from app.schemas import Embedding, CreateEmbedding, CreateEmbeddingBulk
 
 router = APIRouter(tags=["embeddings"])
 
@@ -15,7 +15,7 @@ router = APIRouter(tags=["embeddings"])
     response_model=list[float],
     dependencies=[Depends(get_api_key)],
 )
-async def create_one(
+async def create(
     input: CreateEmbedding,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
 ):
@@ -33,18 +33,18 @@ async def create_one(
     response_model=list[Embedding],
     dependencies=[Depends(get_api_key)],
 )
-async def create_many(
-    input: CreateEmbeddingList,
+async def bulk(
+    input: CreateEmbeddingBulk,
     model: Annotated[SentenceTransformer, Depends(get_embedding_model)],
 ):
     sentences = list(doc.content for doc in input.documents)
-    embeddings: NDArray[np.floating] = model.encode_document(  # type: ignore
+    vectors: NDArray[np.floating] = model.encode_document(  # type: ignore
         sentences=sentences,
         convert_to_numpy=True,
         truncate_dim=input.dimensions,
     )
 
     return list(
-        Embedding(id=doc.id, meta=doc.meta, embedding=emb)
-        for emb, doc in zip(embeddings, input.documents)
+        Embedding(id=doc.id, meta=doc.meta, vector=vector)
+        for vector, doc in zip(vectors, input.documents)
     )

@@ -29,7 +29,7 @@ class Embedding(BaseModel):
 
     id: str | int
     meta: dict[str, Any]
-    embedding: list[float]
+    vector: list[float]
 
 
 class CreateEmbedding(BaseModel):
@@ -41,7 +41,7 @@ class CreateEmbedding(BaseModel):
     dimensions: Annotated[int, BeforeValidator(validate_dimension)]
 
 
-class CreateEmbeddingList(BaseModel):
+class CreateEmbeddingBulk(BaseModel):
     """
     Multiple embed payload
     """

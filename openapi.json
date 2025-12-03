@@ -10,8 +10,8 @@
         "tags": [
           "embeddings"
         ],
-        "summary": "Create One",
-        "operationId": "create_one_api_embeddings__post",
+        "summary": "Create",
+        "operationId": "create_api_embeddings__post",
         "requestBody": {
           "content": {
             "application/json": {
@@ -32,7 +32,7 @@
                     "type": "number"
                   },
                   "type": "array",
-                  "title": "Response Create One Api Embeddings  Post"
+                  "title": "Response Create Api Embeddings  Post"
                 }
               }
             }
@@ -60,13 +60,13 @@
         "tags": [
           "embeddings"
         ],
-        "summary": "Create Many",
-        "operationId": "create_many_api_embeddings_bulk_post",
+        "summary": "Bulk",
+        "operationId": "bulk_api_embeddings_bulk_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateEmbeddingList"
+                "$ref": "#/components/schemas/CreateEmbeddingBulk"
               }
             }
           },
@@ -82,7 +82,7 @@
                     "$ref": "#/components/schemas/Embedding"
                   },
                   "type": "array",
-                  "title": "Response Create Many Api Embeddings Bulk Post"
+                  "title": "Response Bulk Api Embeddings Bulk Post"
                 }
               }
             }
@@ -127,7 +127,7 @@
         "title": "CreateEmbedding",
         "description": "Single embed payload"
       },
-      "CreateEmbeddingList": {
+      "CreateEmbeddingBulk": {
         "properties": {
           "documents": {
             "items": {
@@ -146,7 +146,7 @@
           "documents",
           "dimensions"
         ],
-        "title": "CreateEmbeddingList",
+        "title": "CreateEmbeddingBulk",
         "description": "Multiple embed payload"
       },
       "Document": {
@@ -199,19 +199,19 @@
             "type": "object",
             "title": "Meta"
           },
-          "embedding": {
+          "vector": {
             "items": {
               "type": "number"
             },
             "type": "array",
-            "title": "Embedding"
+            "title": "Vector"
           }
         },
         "type": "object",
         "required": [
           "id",
           "meta",
-          "embedding"
+          "vector"
         ],
         "title": "Embedding",
         "description": "Output data"
