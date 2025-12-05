@@ -45,6 +45,6 @@ async def bulk(
     )
 
     return list(
-        Embedding(id=doc.id, meta=doc.meta, vector=vector)
+        Embedding(id=doc.id, vector=vector)
         for vector, doc in zip(vectors, input.documents)
     )
