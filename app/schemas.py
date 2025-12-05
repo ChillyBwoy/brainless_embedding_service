@@ -1,4 +1,4 @@
-from typing import Any, Annotated
+from typing import Annotated
 from pydantic import BaseModel, BeforeValidator
 
 SUPPORTED_DIMENSIONS = [128, 256, 512, 768, 1024]
@@ -18,7 +18,6 @@ class Document(BaseModel):
     """
 
     id: str | int
-    meta: dict[str, Any]
     content: str
 
 
@@ -28,7 +27,6 @@ class Embedding(BaseModel):
     """
 
     id: str | int
-    meta: dict[str, Any]
     vector: list[float]
 
 
