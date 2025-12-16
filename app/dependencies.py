@@ -16,8 +16,8 @@ def get_settings() -> Settings:
 
 def _get_embedding_model(settings: Settings) -> SentenceTransformer:
     return SentenceTransformer(
-        settings.model_name,
-        cache_folder=settings.cache_folder,
+        settings.embedding_model,
+        cache_folder=settings.embedding_cache_folder,
         token=settings.hf_token,
     )
 

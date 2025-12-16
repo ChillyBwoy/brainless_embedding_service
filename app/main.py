@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.dependencies import get_settings
 from app.routers.embeddings import router as embeddings_router
+from app.routers.reranking import router as reranking_router
 
 settings = get_settings()
 
@@ -21,3 +22,4 @@ app.add_middleware(
 )
 
 app.include_router(embeddings_router, prefix="/api/embeddings")
+app.include_router(reranking_router, prefix="/api/reranking")
