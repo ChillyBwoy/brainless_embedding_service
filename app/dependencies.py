@@ -1,8 +1,9 @@
 from functools import lru_cache
+from typing import Annotated
+
 from fastapi import Depends, Security, HTTPException, status
 from fastapi.security import APIKeyHeader
 from sentence_transformers import SentenceTransformer
-from typing import Annotated
 
 from app.config import Settings
 
