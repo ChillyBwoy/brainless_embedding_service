@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from pydantic import BaseModel, BeforeValidator
 
 SUPPORTED_DIMENSIONS = [128, 256, 512, 768, 1024]
@@ -19,6 +19,15 @@ class Document(BaseModel):
 
     id: str | int
     content: str
+
+
+class RankedDocument(BaseModel):
+    """
+    Base input data
+    """
+
+    id: str | int
+    score: float
 
 
 class Embedding(BaseModel):
@@ -46,3 +55,13 @@ class CreateEmbeddingBulk(BaseModel):
 
     documents: list[Document]
     dimensions: Annotated[int, BeforeValidator(validate_dimension)]
+
+
+class RerankBulk(BaseModel):
+    """
+    Multiple items for rerank
+    """
+
+    documents: list[Document]
+    query: str
+    n: Optional[int] = -1
