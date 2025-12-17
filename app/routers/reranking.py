@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import Annotated
 
-from google.cloud import discoveryengine
+from google.cloud import discoveryengine_v1 as discoveryengine
 
 from app.config import Settings
 from app.dependencies import get_api_key, get_settings
